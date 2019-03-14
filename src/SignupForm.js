@@ -1,28 +1,24 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+
+// Actions
+import * as actionCreators from "./store/actions";
 
 class Signup extends Component {
-  constructor(props) {
-    super(props);
+  state = {
+    username: "",
+    email: "",
+    password: ""
+  };
 
-    this.state = {
-      username: "",
-      email: "",
-      password: ""
-    };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleChange(event) {
+  handleChange = event =>
     this.setState({ [event.target.name]: event.target.value });
-  }
 
-  handleSubmit(event) {
+  handleSubmit = event => {
     event.preventDefault();
-    alert("I DON'T WORK YET");
-  }
+    this.props.signup(this.state, this.props.history);
+  };
 
   render() {
     const { username, email, password } = this.state;
@@ -83,4 +79,14 @@ class Signup extends Component {
   }
 }
 
-export default Signup;
+const mapDispatchToProps = dispatch => {
+  return {
+    signup: (userData, history) =>
+      dispatch(actionCreators.signup(userData, history))
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Signup);
